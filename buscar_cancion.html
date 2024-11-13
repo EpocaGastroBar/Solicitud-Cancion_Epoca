@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscar y Solicitar Canción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #searchInput {
+            width: 300px;
+            padding: 10px;
+        }
+        #suggestions {
+            border: 1px solid #ccc;
+            max-width: 300px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .suggestion {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .suggestion:hover {
+            background-color: #f0f0f0;
+        }
+        #selectedSong {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Buscar y Solicitar Canción</h1>
+    <input type="text" id="searchInput" placeholder="Buscar canción..." oninput="filterSongs()" />
+    <div id="suggestions"></div>
+    <div id="selectedSong"></div>
+
+    <!-- Formulario para enviar la solicitud con Formspree -->
+    <form id="songForm" action="https://formspree.io/f/mnnqvode" method="POST" style="display:none;">
+        <input type="hidden" name="song" id="songInput" />
+        <button type="submit">Enviar Solicitud</button>
+    </form>
+
+    <script>
+        // Lista de canciones unificadas
+        const canciones = [
+            "Andy Rivera - Mi Mundo Entero",
+            "Aventura - Todavía me Amas",
+            "Aventura - Amor De Madre",
+            "Aventura - Angelito",
+            "Aventura - Dile Al Amor",
+            "Así Soy Yo (Remix) - Alexis Cortés",
+            "Banda Elemental & Julión Álvarez - Una raya más al tigre",
+            "Banda Los Recoditos - Mi Último Deseo",
+            // Continúa con el resto de tus canciones...
+        ];
+
+        function filterSongs() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = ''; // Limpiar sugerencias previas
+
+            // Filtrar canciones que coincidan con el texto de entrada
+            const filteredSongs = canciones.filter(song => song.toLowerCase().includes(input));
+
+            // Mostrar las sugerencias
+            filteredSongs.forEach(song => {
+                const div = document.createElement('div');
+                div.textContent = song;
+                div.className = 'suggestion';
+                div.onclick = () => selectSong(song);
+                suggestions.appendChild(div);
+            });
+        }
+
+        function selectSong(song) {
+            document.getElementById('selectedSong').innerText = `Has seleccionado: ${song}`;
+            document.getElementById('songInput').value = song;
+            document.getElementById('songForm').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
